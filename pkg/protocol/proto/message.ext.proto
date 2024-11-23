@@ -1,0 +1,17 @@
+syntax = "proto3";
+package pb;
+option go_package = "gchat/pkg/protocol/pb";
+
+// Single message delivery content (estimated around 100 bytes), todo: Notification bar reminder
+message Message {
+  int32 code = 1; // Push code
+  bytes content = 2; // Push content
+  int64 seq = 3; // User message send sequence number
+  int64 send_time = 4; // Message send timestamp, accurate to milliseconds
+  MessageStatus status = 5; // Message status
+}
+
+enum MessageStatus {
+  MS_NORMAL = 0; // Normal
+  MS_RECALL = 1; // Recalled
+}

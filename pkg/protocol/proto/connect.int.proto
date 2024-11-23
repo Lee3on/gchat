@@ -1,0 +1,27 @@
+syntax = "proto3";
+package pb;
+option go_package = "gchat/pkg/protocol/pb";
+
+import "google/protobuf/empty.proto";
+import "pkg/protocol/proto/message.ext.proto";
+
+service ConnectInt {
+  rpc DeliverMessage (DeliverMessageReq) returns (google.protobuf.Empty);
+}
+
+message DeliverMessageReq {
+  int64 device_id = 1; // device id
+  Message message = 2; // message data
+}
+
+// room pushing message
+message PushRoomMsg{
+  int64 room_id = 1; // device id
+  Message message = 2; // message data
+}
+
+// global pushing message
+message PushAllMsg{
+  Message message = 2; // message data
+}
+

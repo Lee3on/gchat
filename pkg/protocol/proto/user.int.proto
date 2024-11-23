@@ -1,0 +1,25 @@
+syntax = "proto3";
+package pb;
+option go_package = "gchat/pkg/protocol/pb";
+
+import "google/protobuf/empty.proto";
+import "pkg/protocol/proto/user.ext.proto";
+
+service BusinessInt {
+  rpc Auth (AuthReq) returns (google.protobuf.Empty);
+  rpc GetUser (GetUserReq) returns (GetUserResp);
+  rpc GetUsers (GetUsersReq) returns (GetUsersResp);
+}
+
+message AuthReq {
+  int64 user_id = 1;
+  int64 device_id = 2;
+  string token = 3;
+}
+
+message GetUsersReq {
+  map<int64, int32> user_ids = 1;
+}
+message GetUsersResp {
+  map<int64, User> users = 1;
+}

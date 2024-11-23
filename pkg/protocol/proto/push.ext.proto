@@ -1,0 +1,73 @@
+syntax = "proto3";
+package pb;
+option go_package = "gchat/pkg/protocol/pb";
+
+import "pkg/protocol/proto/logic.ext.proto";
+
+enum PushCode {
+  PC_ADD_DEFAULT = 0;
+
+  PC_USER_MESSAGE = 100; // User message
+  PC_GROUP_MESSAGE = 101; // Group message
+
+  PC_ADD_FRIEND = 110; // Add friend request
+  PC_AGREE_ADD_FRIEND = 111; // Agree to add friend
+
+  PC_UPDATE_GROUP = 120; // Update group
+  PC_ADD_GROUP_MEMBERS = 121; // Add group members
+  PC_REMOVE_GROUP_MEMBER = 122; // Remove group member
+}
+
+message Sender {
+  int64 user_id = 2; // Sender ID
+  int64 device_id = 3; // Sender's device ID
+  string avatar_url = 4; // Avatar URL
+  string nickname = 5; // Nickname
+  string extra = 6; // Extra fields
+}
+
+// User message PC_USER_MESSAGE = 100
+message UserMessagePush {
+  Sender sender = 1;
+  int64 receiver_id = 2; // User ID or group ID
+  bytes content = 3; // Content of the message sent by the user
+}
+
+// Add friend PC_ADD_FRIEND = 110
+message AddFriendPush {
+  int64 friend_id = 1; // Friend ID
+  string nickname = 2; // Nickname
+  string avatar_url = 3; // Avatar URL
+  string description = 4; // Description
+}
+
+// Agree to add friend PC_AGREE_ADD_FRIEND = 111
+message AgreeAddFriendPush {
+  int64 friend_id = 1; // Friend ID
+  string nickname = 2; // Nickname
+  string avatar_url = 3; // Avatar URL
+}
+
+// Update group PC_UPDATE_GROUP = 120
+message UpdateGroupPush {
+  int64 opt_id = 1; // Operator user ID
+  string opt_name = 2; // Operator nickname
+  string name = 3; // Group name
+  string avatar_url = 4; // Group avatar URL
+  string introduction = 5; // Group introduction
+  string extra = 6; // Extra fields
+}
+
+// Add group members PC_ADD_GROUP_MEMBERS = 121
+message AddGroupMembersPush {
+  int64 opt_id = 1; // Operator user ID
+  string opt_name = 2; // Operator nickname
+  repeated GroupMember members = 3; // Group members
+}
+
+// Remove group member PC_REMOVE_GROUP_MEMBER = 122
+message RemoveGroupMemberPush {
+  int64 opt_id = 1; // Operator user ID
+  string opt_name = 2; // Operator nickname
+  int64 deleted_user_id = 3; // ID of the member being removed
+}

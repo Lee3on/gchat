@@ -1,0 +1,62 @@
+syntax = "proto3";
+package pb;
+option go_package = "gchat/pkg/protocol/pb";
+
+import "pkg/protocol/proto/message.ext.proto";
+
+enum PackageType {
+  PT_UNKNOWN = 0; // unknown package type
+  PT_SIGN_IN = 1; // device sign in
+  PT_SYNC = 2; // message sync
+  PT_HEARTBEAT = 3; // heartbeat
+  PT_MESSAGE = 4; // message delivery
+  PT_SUBSCRIBE_ROOM = 5; // room subscription
+}
+
+// Input package data from upstream
+message Input {
+  PackageType type = 1; // package type
+  int64 request_id = 2; // request id
+  bytes data = 3; // data
+}
+
+// output package data to downstream
+message Output {
+  PackageType type = 1; // package type
+  int64 request_id = 2; // request id
+  int32 code = 3; // error code
+  string message = 4; // error message
+  bytes data = 5; // data
+}
+
+// device sign in, package_type:1
+message SignInInput {
+  int64 device_id = 1; // device id
+  int64 user_id = 2; // user id
+  string token = 3; // token
+}
+
+// message sync request, package_type:2
+message SyncInput {
+  int64 seq = 1; // seq num that client has already synced
+}
+// message sync response, package_type:2
+message SyncOutput {
+  repeated Message messages = 1; // message list
+  bool has_more = 2; // whether there are more messages
+}
+
+// room subscription, package_type:5
+message SubscribeRoomInput {
+  int64 room_id = 1; // room ID，if it is 0, cancel room subscription
+  int64 seq = 2; // message seq num
+}
+
+// message delivery,package_type:4
+// in message.ext.proto
+
+// ack message after delivering messages, package_type:4
+message MessageACK {
+  int64 device_ack = 2; // seq num of the message that the device has received
+  int64 receive_time = 3; // time stamp of the message that the device has received, in milliseconds
+}

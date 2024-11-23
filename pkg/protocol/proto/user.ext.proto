@@ -1,0 +1,46 @@
+syntax = "proto3";
+package pb;
+option go_package = "gchat/pkg/protocol/pb";
+
+import "google/protobuf/empty.proto";
+
+service BusinessExt {
+  rpc SignIn (SignInReq) returns (SignInResp);
+  rpc GetUser (GetUserReq) returns (GetUserResp);
+  rpc UpdateUser (UpdateUserReq) returns (google.protobuf.Empty);
+}
+
+message SignInReq {
+  string phone_number = 1;
+  string code = 2; // verify code
+  int64 device_id = 3;
+}
+message SignInResp {
+  bool is_new = 1;
+  int64 user_id = 2;
+  string token = 3;
+}
+
+message User {
+  int64 user_id = 1;
+  string nickname = 2;
+  int32 gender = 3;
+  string avatar_url = 4;
+  string extra = 5;
+  int64 create_time = 6;
+  int64 update_time = 7;
+}
+
+message GetUserReq {
+  int64 user_id = 1;
+}
+message GetUserResp {
+  User user = 1;
+}
+
+message UpdateUserReq {
+  string nickname = 1;
+  int32 gender = 2;
+  string avatar_url = 3;
+  string extra = 4;
+}

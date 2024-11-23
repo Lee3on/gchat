@@ -1,0 +1,111 @@
+syntax = "proto3";
+package pb;
+option go_package = "gchat/pkg/protocol/pb";
+
+import "google/protobuf/empty.proto";
+import "pkg/protocol/proto/logic.ext.proto";
+import "pkg/protocol/proto/message.ext.proto";
+
+service LogicInt {
+  // Sign in
+  rpc ConnSignIn (ConnSignInReq) returns (google.protobuf.Empty);
+  // Message synchronization
+  rpc Sync (SyncReq) returns (SyncResp);
+  // Device message acknowledgment
+  rpc MessageACK (MessageACKReq) returns (google.protobuf.Empty);
+  // Device offline
+  rpc Offline (OfflineReq) returns (google.protobuf.Empty);
+  // Subscribe to room
+  rpc SubscribeRoom(SubscribeRoomReq) returns (google.protobuf.Empty);
+  // Push notification
+  rpc Push (PushReq) returns (PushResp);
+  // Push message to room
+  rpc PushRoom(PushRoomReq) returns (google.protobuf.Empty);
+  // Push to all users
+  rpc PushAll(PushAllReq) returns (google.protobuf.Empty);
+
+  // Get device information
+  rpc GetDevice (GetDeviceReq) returns (GetDeviceResp);
+  // Server stop notification
+  rpc ServerStop (ServerStopReq) returns (google.protobuf.Empty);
+}
+
+message ConnSignInReq {
+  int64 device_id = 1; // Device ID
+  int64 user_id = 2; // User ID
+  string token = 3; // Token
+  string conn_addr = 4; // Server address
+  string client_addr = 5; // Client address
+}
+
+message SyncReq {
+  int64 user_id = 1; // User ID
+  int64 device_id = 2; // Device ID
+  int64 seq = 3; // Sequence number already synchronized by the client
+}
+message SyncResp {
+  repeated Message messages = 1; // List of messages
+  bool has_more = 2; // Whether there is more data
+}
+
+message MessageACKReq {
+  int64 user_id = 1; // User ID
+  int64 device_id = 2; // Device ID
+  int64 device_ack = 3; // Message acknowledgment number from the device
+  int64 receive_time = 4; // Message reception timestamp, accurate to milliseconds
+}
+
+message OfflineReq {
+  int64 user_id = 1; // User ID
+  int64 device_id = 2; // Device ID
+  string client_addr = 3; // Client address
+}
+
+message SubscribeRoomReq {
+  int64 user_id = 1; // User ID
+  int64 device_id = 2; // Device ID
+  int64 room_id = 3; // Room ID
+  int64 seq = 4; // Message sequence number
+  string conn_addr = 5; // Server address
+}
+
+message PushReq {
+  int64 user_id = 1; // User ID
+  int32 code = 2; // Push code
+  bytes content = 3; // Push content
+  bool is_persist = 4; // Whether to persist the message
+}
+message PushResp {
+  int64 seq = 1;
+}
+
+message PushAllReq {
+  int32 code = 1; // Push code
+  bytes content = 2; // Push content
+}
+
+message GetDeviceReq {
+  int64 device_id = 1;
+}
+message GetDeviceResp {
+  Device device = 1;
+}
+
+message Device {
+  int64 device_id = 1; // Device ID
+  int64 user_id = 2; // User ID
+  int32 type = 3; // Device type: 1=Android; 2=IOS; 3=Windows; 4=MacOS; 5=Web
+  string brand = 4; // Manufacturer
+  string model = 5; // Model
+  string system_version = 6; // System version
+  string sdk_version = 7; // SDK version
+  int32 status = 8; // Online status: 0=Offline; 1=Online
+  string conn_addr = 9; // Server connection address
+  string client_addr = 10; // Client address
+  int64 create_time = 11; // Creation time
+  int64 update_time = 12; // Update time
+}
+
+message ServerStopReq {
+  string conn_addr = 1; // Server address
+}
