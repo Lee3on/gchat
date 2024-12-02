@@ -1,0 +1,71 @@
+# deployment configuration
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connect-deployment
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app: {{ .Values.server.connect.name }}
+spec:
+  replicas: {{ .Values.server.connect.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.server.connect.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.server.connect.name }}
+    spec:
+      serviceAccountName: k8s-gchat
+      containers:
+        - name: {{ .Values.server.connect.name }}
+          image: {{ .Values.server.connect.image }}
+          ports:
+            - containerPort: 8000
+            - containerPort: 8001
+            - containerPort: 8002
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: ENV
+              value: {{ $.Values.env }}
+            - name: GCHAT_ENV
+              value: "gcp"
+            - name: CLOUD_SERVICE
+              value: "k8s"
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "2"
+      volumes:
+        - name: log
+          emptyDir: {}
+
+---
+# service configuration
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.server.connect.name }}
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app: {{ .Values.server.connect.name }}
+spec:
+  type: LoadBalancer
+  selector:
+    app: {{ .Values.server.connect.name }}
+  ports:
+    - name: rpc
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+    - name: tcp
+      protocol: TCP
+      port: 8001
+      targetPort: 8001
+    - name: websocket
+      protocol: TCP
+      port: 8002
+      targetPort: 8002

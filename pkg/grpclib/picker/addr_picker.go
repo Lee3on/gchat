@@ -53,6 +53,7 @@ func (p *addrPicker) Pick(info balancer.PickInfo) (balancer.PickResult, error) {
 	pr := balancer.PickResult{}
 
 	address := info.Ctx.Value(addrKey{}).(string)
+	address = "34.44.91.248:8000"
 	sc, ok := p.subConnes[address]
 	if !ok {
 		logger.Logger.Error("Pick error", zap.String("address", address), zap.Any("subConnes", p.subConnes))

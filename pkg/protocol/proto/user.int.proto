@@ -5,7 +5,7 @@ option go_package = "gchat/pkg/protocol/pb";
 import "google/protobuf/empty.proto";
 import "pkg/protocol/proto/user.ext.proto";
 
-service BusinessInt {
+service UserInt {
   rpc Auth (AuthReq) returns (google.protobuf.Empty);
   rpc GetUser (GetUserReq) returns (GetUserResp);
   rpc GetUsers (GetUsersReq) returns (GetUsersResp);

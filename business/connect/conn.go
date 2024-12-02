@@ -114,6 +114,7 @@ func (c *Conn) HandleMessage(bytes []byte) {
 	// Intercept unauthenticated users
 	if input.Type != pb.PackageType_PT_SIGN_IN && c.UserId == 0 {
 		// Notify the user they are not logged in
+		logger.Logger.Info("user not logged in")
 		return
 	}
 
@@ -177,6 +178,7 @@ func (c *Conn) SignIn(input *pb.Input) {
 		logger.Sugar.Error(err)
 		return
 	}
+	logger.Logger.Debug("SignIn", zap.Any("signIn", signIn))
 
 	_, err = rpc.GetLogicIntClient().ConnSignIn(grpclib.ContextWithRequestId(context.TODO(), input.RequestId), &pb.ConnSignInReq{
 		UserId:     signIn.UserId,
@@ -188,6 +190,7 @@ func (c *Conn) SignIn(input *pb.Input) {
 
 	c.Send(pb.PackageType_PT_SIGN_IN, input.RequestId, nil, err)
 	if err != nil {
+		logger.Sugar.Error(err)
 		return
 	}
 

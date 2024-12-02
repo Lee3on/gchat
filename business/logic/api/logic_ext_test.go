@@ -27,7 +27,7 @@ func getCtx() context.Context {
 	token := "0"
 	return metadata.NewOutgoingContext(context.TODO(), metadata.Pairs(
 		"user_id", "1",
-		"device_id", "3",
+		"device_id", "1",
 		"token", token,
 		"request_id", strconv.FormatInt(time.Now().UnixNano(), 10)))
 }

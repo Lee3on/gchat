@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: configmap-reader
+rules:
+  - apiGroups: [""]         # "" means the core API group (e.g., ConfigMaps, Secrets)
+    resources: ["configmaps"]
+    verbs: ["get", "list"]   # Permissions to get and list ConfigMaps

@@ -30,12 +30,12 @@ func main() {
 
 	pb.RegisterBusinessIntServer(server, &api.BusinessIntServer{})
 	pb.RegisterBusinessExtServer(server, &api.BusinessExtServer{})
-	listen, err := net.Listen("tcp", config.Config.BusinessRPCListenAddr)
+	listen, err := net.Listen("tcp", config.Config.UserRPCListenAddr)
 	if err != nil {
 		panic(err)
 	}
 
-	logger.Logger.Info("user server start", zap.String("addr", config.Config.BusinessRPCListenAddr))
+	logger.Logger.Info("user server start", zap.String("addr", config.Config.UserRPCListenAddr))
 	err = server.Serve(listen)
 	if err != nil {
 		logger.Logger.Error("serve error", zap.Error(err))

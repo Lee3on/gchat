@@ -5,53 +5,14 @@ option go_package = "gchat/pkg/protocol/pb";
 import "google/protobuf/empty.proto";
 
 service LogicExt {
-  // Register device
-  rpc RegisterDevice (RegisterDeviceReq) returns (RegisterDeviceResp);
-
   // Push a message to the room
   rpc PushRoom(PushRoomReq) returns (google.protobuf.Empty);
 
   // Send a message to a friend
   rpc SendMessageToFriend (SendMessageReq) returns (SendMessageResp);
-  // Add a friend
-  rpc AddFriend (AddFriendReq) returns (google.protobuf.Empty);
-  // Agree to add a friend
-  rpc AgreeAddFriend (AgreeAddFriendReq) returns (google.protobuf.Empty);
-  // Set friend information
-  rpc SetFriend (SetFriendReq) returns (SetFriendResp);
-  // Get the friend list
-  rpc GetFriends (google.protobuf.Empty) returns (GetFriendsResp);
 
   // Send a group message
   rpc SendMessageToGroup (SendMessageReq) returns (SendMessageResp);
-  // Create a group
-  rpc CreateGroup (CreateGroupReq) returns (CreateGroupResp);
-  // Update group information
-  rpc UpdateGroup (UpdateGroupReq) returns (google.protobuf.Empty);
-  // Get group information
-  rpc GetGroup (GetGroupReq) returns (GetGroupResp);
-  // Get all groups the user has joined
-  rpc GetGroups (google.protobuf.Empty) returns (GetGroupsResp);
-
-  // Add group members
-  rpc AddGroupMembers (AddGroupMembersReq) returns (AddGroupMembersResp);
-  // Update group member information
-  rpc UpdateGroupMember (UpdateGroupMemberReq) returns (google.protobuf.Empty);
-  // Delete group members
-  rpc DeleteGroupMember (DeleteGroupMemberReq) returns (google.protobuf.Empty);
-  // Get group members
-  rpc GetGroupMembers (GetGroupMembersReq) returns (GetGroupMembersResp);
-}
-
-message RegisterDeviceReq {
-  int32 type = 2; // Device type
-  string brand = 3; // Manufacturer
-  string model = 4; // Model
-  string system_version = 5; // System version
-  string sdk_version = 6; // SDK version
-}
-message RegisterDeviceResp {
-  int64 device_id = 1; // Device ID
 }
 
 message SendMessageReq {
@@ -70,125 +31,4 @@ message PushRoomReq {
   int64 send_time = 4; // Message sending timestamp, accurate to milliseconds
   bool is_persist = 5; // Whether the message is persistent
   bool is_priority = 6; // Whether the message is sent with priority
-}
-
-message AddFriendReq {
-  int64 friend_id = 1; // Friend ID
-  string remarks = 2; // Remarks
-  string description = 3; // Description
-}
-
-message AgreeAddFriendReq {
-  int64 user_id = 1; // User ID
-  string remarks = 2; // Remarks
-}
-
-message SetFriendReq {
-  int64 friend_id = 1; // Friend ID
-  string remarks = 2; // Remarks
-  string extra = 8; // Extra fields
-}
-message SetFriendResp {
-  int64 friend_id = 1; // Friend ID
-  string remarks = 2; // Remarks
-  string extra = 8; // Extra fields
-}
-
-message Friend {
-  int64 user_id = 1; // User ID
-  string phone_number = 2; // Phone number
-  string nickname = 3; // Nickname
-  int32 gender = 4; // Gender
-  string avatar_url = 5; // Avatar URL
-  string user_extra = 6; // User extra fields
-  string remarks = 7; // Remarks
-  string extra = 8; // Extra fields
-}
-message GetFriendsResp {
-  repeated Friend friends = 1;
-}
-
-message CreateGroupReq {
-  string name = 1; // Name
-  string avatar_url = 2; // Avatar URL
-  string introduction = 3; // Introduction
-  string extra = 4; // Extra fields
-  repeated int64 member_ids = 5; // List of group member IDs
-}
-message CreateGroupResp {
-  int64 group_id = 1; // Group ID
-}
-
-message UpdateGroupReq {
-  int64 group_id = 1; // Group ID
-  string avatar_url = 2; // Avatar URL
-  string name = 3; // Name
-  string introduction = 4; // Introduction
-  string extra = 5; // Extra fields
-}
-
-message GetGroupReq {
-  int64 group_id = 1;
-}
-message GetGroupResp {
-  Group group = 1;
-}
-
-message Group {
-  int64 group_id = 1; // Group ID
-  string name = 2; // Name
-  string avatar_url = 3; // Avatar URL
-  string introduction = 4; // Introduction
-  int32 user_mum = 5; // Number of users
-  string extra = 6; // Extra fields
-  int64 create_time = 7; // Creation time
-  int64 update_time = 8; // Update time
-}
-
-message GetGroupsResp {
-  repeated Group groups = 1;
-}
-
-message AddGroupMembersReq {
-  int64 group_id = 1; // Group ID
-  repeated int64 user_ids = 2; // List of user IDs
-}
-message AddGroupMembersResp {
-  repeated int64 user_ids = 1; // List of user IDs already in the group
-}
-
-enum MemberType {
-  GMT_UNKNOWN = 0; // Unknown
-  GMT_ADMIN = 1; // Admin
-  GMT_MEMBER = 2; // Member
-}
-
-message UpdateGroupMemberReq {
-  int64 group_id = 1; // Group ID
-  int64 user_id = 2; // User ID
-  MemberType member_type = 3; // Member type
-  string remarks = 4; // Remarks
-  string extra = 5; // Extra fields
-}
-
-message DeleteGroupMemberReq {
-  int64 group_id = 1; // Group ID
-  int64 user_id = 2; // User ID
-}
-
-message GetGroupMembersReq {
-  int64 group_id = 1;
-}
-message GetGroupMembersResp {
-  repeated GroupMember members = 1;
-}
-message GroupMember {
-  int64 user_id = 1;
-  string nickname = 2; // Nickname
-  int32 gender = 3; // Gender
-  string avatar_url = 4; // Avatar URL
-  string user_extra = 5; // User extra fields
-  MemberType member_type = 6; // Member type
-  string remarks = 7; // Remarks
-  string extra = 8; // Extra fields for group members
 }

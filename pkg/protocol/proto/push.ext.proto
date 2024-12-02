@@ -2,7 +2,7 @@ syntax = "proto3";
 package pb;
 option go_package = "gchat/pkg/protocol/pb";
 
-import "pkg/protocol/proto/logic.ext.proto";
+import "pkg/protocol/proto/user.ext.proto";
 
 enum PushCode {
   PC_ADD_DEFAULT = 0;

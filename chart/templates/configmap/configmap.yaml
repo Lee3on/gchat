@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: {{ $.Values.namespace }}
+data:
+  mysql: "local-user:jason123456@tcp(10.69.128.3:3306)/gchat?charset=utf8&parseTime=true"
+  redisIP: "10.13.247.19:6379"
+  redisPassword: ""
+  pushRoomSubscribeNum: "100"
+  pushAllSubscribeNum: "100"

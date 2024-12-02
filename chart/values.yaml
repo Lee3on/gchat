@@ -1,0 +1,7 @@
+namespace: default
+env: k8s
+server:
+  connect:
+    name: connect
+    image: us-central1-docker.pkg.dev/cs739-gchat/gchat-repo/connect-service:latest
+    replicas: 3
