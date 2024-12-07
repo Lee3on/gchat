@@ -9,7 +9,7 @@ import (
 var (
 	connectIntClient pb.ConnectIntClient
 	logicIntClient   pb.LogicIntClient
-	userIntClient    pb.BusinessIntClient
+	userIntClient    pb.UserIntClient
 )
 
 func GetConnectIntClient() pb.ConnectIntClient {
@@ -26,7 +26,7 @@ func GetLogicIntClient() pb.LogicIntClient {
 	return logicIntClient
 }
 
-func GetBusinessIntClient() pb.BusinessIntClient {
+func GetUserIntClient() pb.UserIntClient {
 	if userIntClient == nil {
 		userIntClient = config.Config.UserIntClientBuilder()
 	}
@@ -34,7 +34,7 @@ func GetBusinessIntClient() pb.BusinessIntClient {
 }
 
 func GetSender(deviceID, userID int64) (*pb.Sender, error) {
-	user, err := GetBusinessIntClient().GetUser(context.TODO(), &pb.GetUserReq{UserId: userID})
+	user, err := GetUserIntClient().GetUser(context.TODO(), &pb.GetUserReq{UserId: userID})
 	if err != nil {
 		return nil, err
 	}

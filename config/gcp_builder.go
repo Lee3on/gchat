@@ -133,7 +133,7 @@ func (*gcpBuilder) Build() Configuration {
 			}
 			return pb.NewLogicIntClient(conn)
 		},
-		UserIntClientBuilder: func() pb.BusinessIntClient {
+		UserIntClientBuilder: func() pb.UserIntClient {
 			host := "user-service-653320394232.us-central1.run.app:443"
 			var opts []grpc.DialOption
 			opts = append(opts, grpc.WithAuthority(host))
@@ -150,7 +150,7 @@ func (*gcpBuilder) Build() Configuration {
 			if err != nil {
 				panic(err)
 			}
-			return pb.NewBusinessIntClient(conn)
+			return pb.NewUserIntClient(conn)
 		},
 	}
 }

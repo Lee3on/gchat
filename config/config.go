@@ -38,7 +38,7 @@ type Configuration struct {
 
 	ConnectIntClientBuilder func() pb.ConnectIntClient
 	LogicIntClientBuilder   func() pb.LogicIntClient
-	UserIntClientBuilder    func() pb.BusinessIntClient
+	UserIntClientBuilder    func() pb.UserIntClient
 }
 
 func init() {

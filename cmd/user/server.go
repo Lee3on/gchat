@@ -1,12 +1,12 @@
 package main
 
 import (
-	"gchat/business/user/api"
 	"gchat/config"
 	"gchat/pkg/interceptor"
 	"gchat/pkg/logger"
 	"gchat/pkg/protocol/pb"
 	"gchat/pkg/urlwhitelist"
+	"gchat/service/user/api"
 	"net"
 	"os"
 	"os/signal"
@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	server := grpc.NewServer(grpc.UnaryInterceptor(interceptor.NewInterceptor("business_interceptor", urlwhitelist.Business)))
+	server := grpc.NewServer(grpc.UnaryInterceptor(interceptor.NewInterceptor("user_interceptor", urlwhitelist.User)))
 
 	// Listen for service shutdown signals, service graceful restart
 	go func() {
@@ -28,8 +28,8 @@ func main() {
 		server.GracefulStop()
 	}()
 
-	pb.RegisterBusinessIntServer(server, &api.BusinessIntServer{})
-	pb.RegisterBusinessExtServer(server, &api.BusinessExtServer{})
+	pb.RegisterUserIntServer(server, &api.UserIntServer{})
+	pb.RegisterUserExtServer(server, &api.UserExtServer{})
 	listen, err := net.Listen("tcp", config.Config.UserRPCListenAddr)
 	if err != nil {
 		panic(err)

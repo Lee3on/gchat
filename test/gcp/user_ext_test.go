@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func getBusinessExtClient() pb.BusinessExtClient {
+func getUserExtClient() pb.UserExtClient {
 	host := "user-service-653320394232.us-central1.run.app:443"
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithAuthority(host))
@@ -27,11 +27,11 @@ func getBusinessExtClient() pb.BusinessExtClient {
 		fmt.Println(err)
 		return nil
 	}
-	return pb.NewBusinessExtClient(conn)
+	return pb.NewUserExtClient(conn)
 }
 
 func TestUserExtServer_SignIn(t *testing.T) {
-	resp, err := getBusinessExtClient().SignIn(getCtx(), &pb.SignInReq{
+	resp, err := getUserExtClient().SignIn(getCtx(), &pb.SignInReq{
 		PhoneNumber: "22222222222",
 		Code:        "0",
 		DeviceId:    2,
@@ -44,7 +44,7 @@ func TestUserExtServer_SignIn(t *testing.T) {
 }
 
 func TestUserExtServer_GetUser(t *testing.T) {
-	resp, err := getBusinessExtClient().GetUser(getCtx(), &pb.GetUserReq{UserId: 1})
+	resp, err := getUserExtClient().GetUser(getCtx(), &pb.GetUserReq{UserId: 1})
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
@@ -52,7 +52,7 @@ func TestUserExtServer_GetUser(t *testing.T) {
 }
 
 func TestUserExtServer_UpdateUser(t *testing.T) {
-	resp, err := getBusinessExtClient().UpdateUser(getCtx(), &pb.UpdateUserReq{
+	resp, err := getUserExtClient().UpdateUser(getCtx(), &pb.UpdateUserReq{
 		Nickname: "test",
 	})
 	if err != nil {

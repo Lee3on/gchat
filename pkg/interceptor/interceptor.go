@@ -44,7 +44,7 @@ func handleWithAuth(ctx context.Context, req interface{}, info *grpc.UnaryServer
 			}
 			token := grpclib.GetCtxToken(ctx)
 
-			_, err = rpc.GetBusinessIntClient().Auth(ctx, &pb.AuthReq{
+			_, err = rpc.GetUserIntClient().Auth(ctx, &pb.AuthReq{
 				UserId:   userId,
 				DeviceId: deviceId,
 				Token:    token,

@@ -1,15 +1,14 @@
 package main
 
 import (
-	"gchat/business/logic/api"
-	"gchat/business/logic/domain/device"
-	"gchat/business/logic/domain/message"
-	"gchat/business/logic/proxy"
 	"gchat/config"
 	"gchat/pkg/interceptor"
 	"gchat/pkg/logger"
 	"gchat/pkg/protocol/pb"
-	"gchat/pkg/urlwhitelist"
+	"gchat/service/message/api"
+	"gchat/service/message/domain/message"
+	"gchat/service/message/proxy"
+	"gchat/service/user/domain/device"
 	"net"
 	"os"
 	"os/signal"
@@ -25,7 +24,7 @@ func init() {
 }
 
 func main() {
-	server := grpc.NewServer(grpc.UnaryInterceptor(interceptor.NewInterceptor("logic_interceptor", urlwhitelist.Logic)))
+	server := grpc.NewServer(grpc.UnaryInterceptor(interceptor.NewInterceptor("logic_interceptor", nil)))
 
 	go func() {
 		c := make(chan os.Signal, 1)

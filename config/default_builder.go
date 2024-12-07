@@ -92,13 +92,13 @@ func (*defaultBuilder) Build() Configuration {
 			}
 			return pb.NewLogicIntClient(conn)
 		},
-		UserIntClientBuilder: func() pb.BusinessIntClient {
+		UserIntClientBuilder: func() pb.UserIntClient {
 			conn, err := grpc.DialContext(context.TODO(), "addrs:///127.0.0.1:8020", grpc.WithInsecure(), grpc.WithUnaryInterceptor(interceptor),
 				grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)))
 			if err != nil {
 				panic(err)
 			}
-			return pb.NewBusinessIntClient(conn)
+			return pb.NewUserIntClient(conn)
 		},
 	}
 }

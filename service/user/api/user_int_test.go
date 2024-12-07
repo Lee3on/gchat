@@ -1,29 +1,15 @@
-package main
+package api
 
 import (
-	"crypto/tls"
-	"crypto/x509"
 	"fmt"
 	"gchat/pkg/protocol/pb"
-	"google.golang.org/grpc/credentials"
 	"testing"
 
 	"google.golang.org/grpc"
 )
 
 func getUserIntClient() pb.UserIntClient {
-	host := "user-service-653320394232.us-central1.run.app:443"
-	var opts []grpc.DialOption
-	opts = append(opts, grpc.WithAuthority(host))
-	systemRoots, err := x509.SystemCertPool()
-	if err != nil {
-		return nil
-	}
-	cred := credentials.NewTLS(&tls.Config{
-		RootCAs: systemRoots,
-	})
-	opts = append(opts, grpc.WithTransportCredentials(cred))
-	conn, err := grpc.Dial(host, opts...)
+	conn, err := grpc.Dial("localhost:8020", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		return nil

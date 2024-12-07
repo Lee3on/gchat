@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"gchat/business/connect"
 	"gchat/config"
 	"gchat/pkg/interceptor"
 	"gchat/pkg/logger"
 	"gchat/pkg/protocol/pb"
 	"gchat/pkg/rpc"
+	"gchat/service/connect"
 	"net"
 	"os"
 	"os/signal"
