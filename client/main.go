@@ -1,13 +1,17 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"gchat/client/user"
 	"gchat/pkg/protocol/pb"
 	"gchat/pkg/util"
+	"google.golang.org/grpc/metadata"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -27,6 +31,17 @@ type WSClient struct {
 	DeviceId int64
 	Seq      int64
 	Conn     *websocket.Conn
+}
+
+func (c *WSClient) Login() {
+	_, err := user.GetUserExtClient().SignIn(c.getCtx(), &pb.SignInReq{
+		PhoneNumber: fmt.Sprintf("%d", c.UserId),
+		Code:        "0",
+		DeviceId:    c.DeviceId,
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 func (c *WSClient) Start() {
@@ -165,4 +180,13 @@ func (c *WSClient) HandlePackage(bytes []byte) {
 	default:
 		fmt.Println("switch other")
 	}
+}
+
+func (c *WSClient) getCtx() context.Context {
+	token := "0"
+	return metadata.NewOutgoingContext(context.TODO(), metadata.Pairs(
+		"user_id", fmt.Sprintf("%d", c.UserId),
+		"device_id", fmt.Sprintf("%d", c.DeviceId),
+		"token", token,
+		"request_id", strconv.FormatInt(time.Now().UnixNano(), 10)))
 }

@@ -44,4 +44,4 @@ gcp_push_helm:
 	helm push gchat-1.4.0.tgz oci://us-central1-docker.pkg.dev/cs739-gchat/helm-repo
 
 gcp_deploy_helm:
-	helm upgrade gchat ./chart --version 1.10.0
+	helm upgrade gchat ./chart --version 1.11.0
