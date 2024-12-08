@@ -39,8 +39,8 @@ func GetLogicExtClient() pb.LogicExtClient {
 func getCtx() context.Context {
 	token := "0"
 	return metadata.NewOutgoingContext(context.TODO(), metadata.Pairs(
-		"user_id", "23",
-		"device_id", "2",
+		"user_id", "33",
+		"device_id", "33",
 		"token", token,
 		"request_id", strconv.FormatInt(time.Now().UnixNano(), 10)))
 }

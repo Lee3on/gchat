@@ -85,6 +85,7 @@ message UpdateUserReq {
   int32 gender = 2;
   string avatar_url = 3;
   string extra = 4;
+  string phone_number = 5;
 }
 
 message AddFriendReq {

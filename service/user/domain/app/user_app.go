@@ -29,6 +29,7 @@ func (*userApp) Update(ctx context.Context, userId int64, req *pb.UpdateUserReq)
 		return nil
 	}
 
+	u.PhoneNumber = req.PhoneNumber
 	u.Nickname = req.Nickname
 	u.Gender = req.Gender
 	u.AvatarUrl = req.AvatarUrl

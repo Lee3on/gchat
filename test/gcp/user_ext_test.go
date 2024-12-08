@@ -8,8 +8,11 @@ import (
 	"gchat/pkg/protocol/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"strconv"
 	"testing"
+	"time"
 )
 
 func GetUserExtClient() pb.UserExtClient {
@@ -68,9 +71,26 @@ func TestUserExtServer_GetUser(t *testing.T) {
 	fmt.Printf("%+v\n", resp)
 }
 
+func TestUserExtServer_UpdateUsers(t *testing.T) {
+	for i := 1; i <= 2000; i++ {
+		ctx := metadata.NewOutgoingContext(context.TODO(), metadata.Pairs(
+			"user_id", fmt.Sprintf("%d", i),
+			"device_id", fmt.Sprintf("%d", i),
+			"token", "0",
+			"request_id", strconv.FormatInt(time.Now().UnixNano(), 10)))
+		resp, err := GetUserExtClient().UpdateUser(ctx, &pb.UpdateUserReq{
+			PhoneNumber: fmt.Sprintf("%d", i),
+		})
+		if err != nil {
+			t.Fatalf("err: %v", err)
+		}
+		fmt.Printf("%+v\n", resp)
+	}
+}
+
 func TestUserExtServer_UpdateUser(t *testing.T) {
 	resp, err := GetUserExtClient().UpdateUser(getCtx(), &pb.UpdateUserReq{
-		Nickname: "test",
+		PhoneNumber: "3033",
 	})
 	if err != nil {
 		t.Fatalf("err: %v", err)
