@@ -1,15 +1,17 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"gchat/client/ws_client"
 	"sync"
 )
 
 func main() {
-	const maxUsers = 2000
+	maxUsers := flag.Int("maxUsers", 1, "Number of users to simulate")
+	flag.Parse()
 	var wg sync.WaitGroup
-	wg.Add(maxUsers)
+	wg.Add(*maxUsers)
 
 	// Create a channel to control the order of execution
 	orderChan := make(chan struct{}, 1)
@@ -17,7 +19,7 @@ func main() {
 	// Seed the channel to allow the first goroutine to proceed
 	orderChan <- struct{}{}
 
-	for i := 1; i <= maxUsers; i++ {
+	for i := 1; i <= *maxUsers; i++ {
 		go func(userId int64) {
 			defer wg.Done()
 
